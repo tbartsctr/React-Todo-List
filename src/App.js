@@ -33,6 +33,15 @@ function App(){
       setEditedTask(tasks[index].text);  
     };
 
+    const saveTask = (index) => {
+      const updatedTasks = tasks.map((task, i) =>
+        i === index ? { ...task, text: editedTask } : task
+      );
+      setTasks(updatedTasks);  
+      setEditingIndex(null);  
+      setEditedTask('');  
+    };
+
     return (
       <div className="App">
         <h1>React Todo List</h1>
@@ -46,23 +55,39 @@ function App(){
           <ul>
           {tasks.map((task, index) => (
             <li key={index} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+              {editingIndex === index ?( <input
+                type="text"
+                value={editedTask}
+                onChange={(e) => setEditedTask(e.target.value)} 
+              />
+            ) : (
+             
+              <></>)}
               <input
                 type="checkbox"
                 checked={task.completed}
                 onChange={() => toggleTaskCompletion(index)}
                 />
-              {task.text}
-              <button onClick={() => removeTask(index)}
-                disabled={!task.completed}
-                >Delete</button>
-              </li>
-            ))}
-          </ul>
-      </div>
-    );
-  }
-
-
-
+                {task.text}
+                {editingIndex === index ? (
+              <button onClick={() => saveTask(index)}>Save</button>
+            ) : (
+              <>
+                <button onClick={() => startEditing(index)}>Edit</button>
+                <button
+                  onClick={() => removeTask(index)} 
+                  disabled={!task.completed} 
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default App;
+
