@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './App.css';
 
 function App(){
   const [tasks, setTasks] = useState([]);
@@ -8,7 +9,7 @@ function App(){
 
   const addTask = () => {
     if (newTask.trim()) {
-      setTasks([...tasks, { text: newTask, completed: false}]);
+      setTasks([{ text: newTask, completed: false},...tasks]);
       setNewTask('');
     };
 };
